@@ -1,9 +1,11 @@
+//Забыл сделать первый пуш с чистым проектом соре(
 import { Paper, Divider, Button, List, Tabs, Tab } from '@mui/material';
 import { AddField } from './components/AddField';
 import { Item } from './components/Item';
-import './App.css';
 import { FC, useReducer } from 'react';
 import { ITask, reducer } from './reducer';
+import './App.css';
+
 
 
 const initialState: ITask[] = [{
