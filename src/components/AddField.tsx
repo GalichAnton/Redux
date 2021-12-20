@@ -9,8 +9,7 @@ interface IProp {
   onAdd: (task: ITask) => void
 }
 
-
-export const AddField: FC<IProp> = ({ onAdd}) => {
+export const AddField: FC<IProp> = ({ onAdd }) => {
 
   const [taskState, setTaskState] = useState<ITask>({
     id: 1,
@@ -33,10 +32,19 @@ export const AddField: FC<IProp> = ({ onAdd}) => {
 
   const clearTask = () => {
     setTaskState({
-      id:taskState.id+1,
+      id: taskState.id,
       text: '',
       completed: false
     })
+  }
+
+  const addTask = () => {
+    if (taskState.text) {
+      onAdd(taskState)
+      clearTask()
+    } else {
+      alert('Введите задачу')
+    }
   }
 
   return (
@@ -48,15 +56,8 @@ export const AddField: FC<IProp> = ({ onAdd}) => {
         icon={<RadioButtonUncheckedIcon />}
         checkedIcon={<CheckCircleIcon />}
       />
-      <TextField placeholder="Введите текст задачи..." variant="standard" fullWidth value={taskState.text} onChange={(e) => onChangeInput(e)} />
-      <Button onClick={() => {
-        if (taskState.text) {
-          onAdd(taskState)
-          clearTask()
-        } else {
-          alert('Введите задачу')
-        }
-      }}>
+      <TextField placeholder="Введите текст задачи..." variant="standard" fullWidth value={taskState.text} onChange={onChangeInput} />
+      <Button onClick={addTask}>
         <AddIcon />
       </Button>
     </div>

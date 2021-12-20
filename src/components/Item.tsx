@@ -14,7 +14,7 @@ interface IProps {
 
 export const Item:FC<IProps> = ({task,onComplete,onDelete}) => {
   return (
-    <ListItem id={String(task.id)} onClick={(e)=>onComplete(Number(e.currentTarget.id))}>
+    <ListItem onClick={()=>onComplete(task.id)}> {/* блин час сидел думал как айдишник передать, оказывается все так просто)) */} 
       <div className="d-flex item">
         <Checkbox icon={<RadioButtonUncheckedIcon />} checkedIcon={<CheckCircleIcon />} checked={task.completed} />
         <Typography className="item-text">{task.text}</Typography>
@@ -22,7 +22,7 @@ export const Item:FC<IProps> = ({task,onComplete,onDelete}) => {
           <IconButton>
             <EditIcon style={{ fontSize: 20 }} />
           </IconButton>
-          <IconButton id={String(task.id)} onClick={(e)=>onDelete(Number(e.currentTarget.id))}>
+          <IconButton onClick={()=>onDelete(task.id)}>
             <DeleteOutlineIcon style={{ fontSize: 20 }} />
           </IconButton>
         </div>

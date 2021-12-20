@@ -23,13 +23,16 @@ export interface IDeleteTask {
   }
 }
 
-
 export const reducer = (state: ITask[], action: IAddTask | ICompletedTask | IDeleteTask) => {
   switch (action.type) {
     case 'ADD_TASK':
       return [
         ...state,
-        action.payload
+        {
+          id: state[state.length - 1]?.id  ? state[state.length - 1].id + 1 : 1, 
+          text: action.payload.text,
+          completed: action.payload.completed
+        }
       ]
     case 'COMPLETE_TASK':
       return [...state].map((task) => {
