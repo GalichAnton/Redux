@@ -25,15 +25,17 @@ const App: FC = () => {
   const completeTask = (id: number): void => {
     dispatch({
       type: 'COMPLETE_TASK',
-      payload: {id}
+      payload: { id }
     })
   }
-  
+
   const onDelete = (id: number): void => {
-    dispatch({
-      type: 'DELETE_TASK',
-      payload: {id}
-    })
+    if (window.confirm('Вы точно хотите удалить задачу?')) {
+      dispatch({
+        type: 'DELETE_TASK',
+        payload: { id }
+      })
+    }
   }
 
   return (
@@ -52,7 +54,7 @@ const App: FC = () => {
         <Divider />
         <List>
           {state.map((item) => (
-            <Item key={item.id} task={item} onComplete={completeTask} onDelete={onDelete}/>
+            <Item key={item.id} task={item} onComplete={completeTask} onDelete={onDelete} />
           ))}
         </List>
         <Divider />
