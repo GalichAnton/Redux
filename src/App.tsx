@@ -7,7 +7,7 @@ import { ITask, reducer } from './reducer';
 import './App.css';
 
 const initialState: ITask[] = [{
-  id: 0,
+  id: 1,
   text: 'Сделать что-то',
   completed: false
 }]

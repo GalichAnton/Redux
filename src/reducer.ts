@@ -29,7 +29,7 @@ export const reducer = (state: ITask[], action: IAddTask | ICompletedTask | IDel
       return [
         ...state,
         {
-          id: action.payload.id +1 ,
+          id: state[state.length - 1]?.id  ? state[state.length - 1].id + 1 : 1, 
           text: action.payload.text,
           completed: action.payload.completed
         }

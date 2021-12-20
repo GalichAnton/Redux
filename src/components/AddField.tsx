@@ -32,7 +32,7 @@ export const AddField: FC<IProp> = ({ onAdd }) => {
 
   const clearTask = () => {
     setTaskState({
-      id: taskState.id + 1,
+      id: taskState.id,
       text: '',
       completed: false
     })
