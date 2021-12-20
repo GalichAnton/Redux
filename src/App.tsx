@@ -6,8 +6,6 @@ import { FC, useReducer } from 'react';
 import { ITask, reducer } from './reducer';
 import './App.css';
 
-
-
 const initialState: ITask[] = [{
   id: 0,
   text: 'Сделать что-то',
@@ -18,32 +16,23 @@ const App: FC = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
   const addTask = (task: ITask) => {
-    console.log(task.id)
     dispatch({
       type: 'ADD_TASK',
-      payload: {
-        id:task.id+1,
-        completed: task.completed,
-        text:task.text 
-      }
+      payload: task
     })
   }
 
   const completeTask = (id: number): void => {
     dispatch({
       type: 'COMPLETE_TASK',
-      payload: {
-        id: id
-      }
+      payload: {id}
     })
   }
+  
   const onDelete = (id: number): void => {
-    console.log(id)
     dispatch({
       type: 'DELETE_TASK',
-      payload: {
-        id:id
-      }
+      payload: {id}
     })
   }
 
