@@ -1,8 +1,7 @@
-//Забыл сделать первый пуш с чистым проектом соре(
 import { Paper, Divider, Button, List, Tabs, Tab } from '@mui/material';
 import { AddField } from './components/AddField';
 import { Item } from './components/Item';
-import { FC, useReducer } from 'react';
+import { FC, useReducer, useState } from 'react';
 import { ITask, reducer } from './reducer';
 import './App.css';
 
@@ -14,7 +13,8 @@ const initialState: ITask[] = [{
 
 const App: FC = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
-
+  const [isAllCompleted, setIsAllCompleted] = useState(false)
+  const [taskTab, setTasksTab] = useState('all')
   const addTask = (task: ITask) => {
     dispatch({
       type: 'ADD_TASK',
@@ -38,6 +38,24 @@ const App: FC = () => {
     }
   }
 
+  const deleteAll = () => {
+    dispatch({
+      type: 'DELETE_ALL'
+    })
+  }
+
+  const changeAllStatus = () => {
+    dispatch({
+      type: 'CHANGE_ALL',
+      payload: isAllCompleted
+    })
+    setIsAllCompleted(!isAllCompleted)
+  }
+
+  const setTabValue = (tab:string) => {
+    return tab === 'all' ? 0 : tab === 'active' ? 1 : tab === 'complete' ? 2 : 0
+  }
+
   return (
     <div className="App" >
       <Paper className="wrapper">
@@ -46,21 +64,27 @@ const App: FC = () => {
         </Paper>
         <AddField onAdd={addTask} />
         <Divider />
-        <Tabs value={0}>
-          <Tab label="Все" />
-          <Tab label="Активные" />
-          <Tab label="Завершённые" />
+        <Tabs value={setTabValue(taskTab)}>
+          <Tab onClick={() => setTasksTab('all')} label="Все" />
+          <Tab onClick={() => setTasksTab('active')} label="Активные" />
+          <Tab onClick={() => setTasksTab('complete')} label="Завершённые" />
         </Tabs>
         <Divider />
         <List>
-          {state.map((item) => (
+          {taskTab === 'all' && state.map((item) => (
             <Item key={item.id} task={item} onComplete={completeTask} onDelete={onDelete} />
+          ))}
+          {taskTab === 'active' && state.map((item) => (
+            !item.completed && <Item key={item.id} task={item} onComplete={completeTask} onDelete={onDelete} />
+          ))}
+          {taskTab === 'complete' && state.map((item) => (
+            item.completed && <Item key={item.id} task={item} onComplete={completeTask} onDelete={onDelete} />
           ))}
         </List>
         <Divider />
         <div className="check-buttons">
-          <Button>Отметить всё</Button>
-          <Button>Очистить</Button>
+          <Button onClick={changeAllStatus}>{isAllCompleted ? 'Отметить всё' : 'Снять все отметки'}</Button>
+          <Button onClick={deleteAll}>Очистить</Button>
         </div>
       </Paper>
     </div>
