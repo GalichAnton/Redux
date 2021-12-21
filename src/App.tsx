@@ -52,8 +52,14 @@ const App: FC = () => {
     setIsAllCompleted(!isAllCompleted)
   }
 
-  const setTabValue = (tab:string) => {
-    return tab === 'all' ? 0 : tab === 'active' ? 1 : tab === 'complete' ? 2 : 0
+  const setTabValue = (tab: string) => {
+    if (tab === 'all') {
+      return 0
+    } else if (tab === 'active') {
+      return 1
+    } else if (tab === 'complete') {
+      return 2
+    }
   }
 
   return (
@@ -71,15 +77,19 @@ const App: FC = () => {
         </Tabs>
         <Divider />
         <List>
-          {taskTab === 'all' && state.map((item) => (
-            <Item key={item.id} task={item} onComplete={completeTask} onDelete={onDelete} />
-          ))}
-          {taskTab === 'active' && state.map((item) => (
-            !item.completed && <Item key={item.id} task={item} onComplete={completeTask} onDelete={onDelete} />
-          ))}
-          {taskTab === 'complete' && state.map((item) => (
-            item.completed && <Item key={item.id} task={item} onComplete={completeTask} onDelete={onDelete} />
-          ))}
+          {
+            state.filter((task)=>{
+              if(taskTab === 'all'){
+                return true
+              }else if(taskTab === 'active'){
+                return !task.completed
+              } else if(taskTab === 'complete'){
+                return task.completed
+              }
+            }).map((item) => (
+              <Item key={item.id} task={item} onComplete={completeTask} onDelete={onDelete} />
+            ))
+          }
         </List>
         <Divider />
         <div className="check-buttons">
