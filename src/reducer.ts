@@ -1,3 +1,4 @@
+
 export interface ITask {
   id: number
   text: string
@@ -22,14 +23,24 @@ export interface IDeleteTask {
     id: number
   }
 }
+export interface IDeleteAllTasks {
+  type: 'DELETE_ALL'
+}
 
-export const reducer = (state: ITask[], action: IAddTask | ICompletedTask | IDeleteTask) => {
+export interface IChangeStatus {
+  type: 'CHANGE_ALL'
+  payload:boolean
+}
+
+type ActionType = IAddTask | ICompletedTask | IDeleteTask | IDeleteAllTasks | IChangeStatus
+
+export const reducer = (state: ITask[], action: ActionType) => {
   switch (action.type) {
     case 'ADD_TASK':
       return [
         ...state,
         {
-          id: state[state.length - 1]?.id  ? state[state.length - 1].id + 1 : 1, 
+          id: state[state.length - 1]?.id ? state[state.length - 1].id + 1 : 1,
           text: action.payload.text,
           completed: action.payload.completed
         }
@@ -43,5 +54,12 @@ export const reducer = (state: ITask[], action: IAddTask | ICompletedTask | IDel
       })
     case 'DELETE_TASK':
       return [...state].filter((task) => task.id !== action.payload.id)
+    case 'DELETE_ALL':
+      return state = []
+    case 'CHANGE_ALL':
+      return [...state].map((task) => {
+        task.completed = action.payload
+        return task
+      }) 
   }
 }
